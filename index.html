@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Login Only</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e0eafc, #cfdef3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .logo-area {
+            font-size: 50px;
+            color: #4a90e2;
+            margin-bottom: 15px;
+        }
+
+        .login-container h2 {
+            margin-bottom: 8px;
+            color: #333333;
+            font-weight: 600;
+        }
+
+        .login-container p {
+            color: #666666;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .google-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #ffffff;
+            color: #555555;
+            border: 1px solid #cccccc;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: background 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .google-btn:hover {
+            background-color: #f7f9fc;
+        }
+
+        .google-btn i {
+            color: #ea4335;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="logo-area">
+            <i class="fas fa-bubble"></i>
+        </div>
+        <h2>Welcome to Bubble</h2>
+        <p>Please Login With Google Account.</p>
+        
+        <button type="button" class="google-btn" id="google-login-btn">
+            <i class="fab fa-google"></i> Sign in with Google
+        </button>
+    </div>
+
+    <script>
+        // မင်းရဲ့ Firebase Config 
+        const firebaseConfig = {
+          apiKey: "AIzaSyD28ZCacgPS03vvkyqMcsXinrz9Wl5znHI",
+          authDomain: "friend-memories-2026.firebaseapp.com",
+          databaseURL: "https://friend-memories-2026-default-rtdb.firebaseio.com",
+          projectId: "friend-memories-2026",
+          storageBucket: "friend-memories-2026.firebasestorage.app",
+          messagingSenderId: "1050214427187",
+          appId: "1:1050214427187:web:cfbe6b2dc3e4458781d146",
+          measurementId: "G-DVHQV7RW1F"
+        };
+        
+        // Firebase စတင်ခြင်း
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const provider = new firebase.auth.GoogleAuthProvider();
+
+        // Google Login နှိပ်လျှင် လုပ်ဆောင်ချက်
+        document.getElementById('google-login-btn').addEventListener('click', () => {
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    const user = result.user;
+                    
+                    // 🟢 စစ်ဆေးချက်မလုပ်တော့ဘဲ ဝင်သမျှ Gmail အားလုံးကို လက်ခံပြီး အချက်အလက်သိမ်းပါမည်
+                    localStorage.setItem('user_email', user.email);
+                    
+                    // Profile ဖြည့်စွက်သည့် စာမျက်နှာသို့ တန်းလွှတ်မည်
+                    window.location.href = "jaccount.html";
+                })
+                .catch((error) => {
+                    console.error("Login Error: ", error);
+                    alert("အကောင့်ဝင်ခြင်း မအောင်မြင်ပါ- " + error.message);
+                });
+        });
+    </script>
+
+</body>
+</html>
